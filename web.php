@@ -146,9 +146,10 @@ class Web extends Prefab {
 				}
 				else
 					$item=array($item);
+				$ret=array();
 				foreach ($item as $file) {
 					if (empty($file['name']))
-						return FALSE;
+						continue;
 					$base=basename($file['name']);
 					$imn=($slug && preg_match('/(.+)(\.\w+)$/',$base,$parts)?
 						$this->slug($parts[1]).$parts[2]:$base);
@@ -159,8 +160,9 @@ class Web extends Prefab {
 						$func && !$fw->call($func,array($file)) ||
 						!move_uploaded_file($file['tmp_name'],$dst))
 						return FALSE;
+					$ret[]=$imn;
 				}
-				return $imn;
+				return $ret;
 			}
 		return FALSE;
 	}
